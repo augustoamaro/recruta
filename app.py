@@ -74,10 +74,13 @@ def main():
             else:
                 st.error("Usuário ou senha incorretos")
     else:
-        if "instructions" not in st.session_state or "temperature" not in st.session_state:
-            instructions, temperature = get_instructions()
+        if "instructions" not in st.session_state or "temperature" not in st.session_state or "nota_apto" not in st.session_state or "nota_min_semi_apto" not in st.session_state or "nota_max_semi_apto" not in st.session_state:
+            instructions, nota_apto, nota_min_semi_apto, nota_max_semi_apto, temperature = get_instructions()
             st.session_state.instructions = instructions
             st.session_state.temperature = temperature
+            st.session_state.nota_apto = nota_apto
+            st.session_state.nota_min_semi_apto = nota_min_semi_apto
+            st.session_state.nota_max_semi_apto = nota_max_semi_apto
 
         st.sidebar.title("Administração")
         if st.session_state.role == "admin":
@@ -85,8 +88,17 @@ def main():
             st.sidebar.text_area("Instruções", key="instructions", height=300)
             st.sidebar.slider("Temperatura", 0.0, 1.0,
                               st.session_state.temperature, key="temperature")
+            st.sidebar.number_input(
+                "Nota Apto", min_value=0, step=1, key="nota_apto")
+            st.sidebar.number_input(
+                "Nota Min Semi-Apto", min_value=0, step=1, key="nota_min_semi_apto")
+            st.sidebar.number_input(
+                "Nota Max Semi-Apto", min_value=0, step=1, key="nota_max_semi_apto")
             if st.sidebar.button("Salvar Instruções"):
                 save_instructions(st.session_state.instructions,
+                                  st.session_state.nota_apto,
+                                  st.session_state.nota_min_semi_apto,
+                                  st.session_state.nota_max_semi_apto,
                                   st.session_state.temperature)
                 st.success("Instruções salvas com sucesso!")
         else:
@@ -128,9 +140,9 @@ def main():
                 instructions = f"""
                 Você é um assistente com nome de RecrutaSmart especializado em analisar e selecionar currículos em formato .PDF.
                 Absorva as seguintes variáveis:
-                “nota_apto” = 7;
-                “nota_min_sa”=3;
-                “nota_max_sa”=7;
+                “nota_apto” = {st.session_state.nota_apto};
+                “nota_min_sa”={st.session_state.nota_min_semi_apto};
+                “nota_max_sa”={st.session_state.nota_max_semi_apto};
                 {get_vaga_instructions(vaga)}
                 Sempre que o usuário solicitar o "analise". Siga as diretrizes abaixo para seleção do candidato:
                 1. Liste de forma numerada todas as vagas.
@@ -183,6 +195,10 @@ def main():
             st.button("Enviar", on_click=send_message)
         with col2:
             st.button("Limpar Conversa", on_click=clear_messages)
+
+
+if __name__ == "__main__":
+    main()
 
 
 if __name__ == "__main__":
