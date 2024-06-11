@@ -50,7 +50,7 @@ def get_instructions():
         return "", 0.7
 
 
-def save_instructions(text, temperature):
+def save_instructions(instruction, temperature):
     try:
         connection = mysql.connector.connect(
             host=st.secrets["mysql"]["host"],
@@ -60,8 +60,8 @@ def save_instructions(text, temperature):
             database=st.secrets["mysql"]["database"]
         )
         cursor = connection.cursor()
-        query = "REPLACE INTO instructions (id, text, temperature) VALUES (1, %s, %s)"
-        cursor.execute(query, (text, temperature))
+        query = "REPLACE INTO instructions (id, instruction, temperature) VALUES (1, %s, %s)"
+        cursor.execute(query, (instruction, temperature))
         connection.commit()
         cursor.close()
         connection.close()
