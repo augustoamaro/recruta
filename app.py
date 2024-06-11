@@ -88,12 +88,12 @@ def main():
             st.sidebar.text_area("Instruções", key="instructions", height=300)
             st.sidebar.slider("Temperatura", 0.0, 1.0,
                               st.session_state.temperature, key="temperature")
-            st.sidebar.number_input(
-                "Nota Apto", min_value=0, step=1, key="nota_apto")
-            st.sidebar.number_input(
-                "Nota Min Semi-Apto", min_value=0, step=1, key="nota_min_semi_apto")
-            st.sidebar.number_input(
-                "Nota Max Semi-Apto", min_value=0, step=1, key="nota_max_semi_apto")
+            st.sidebar.slider("Nota Apto", 0, 10,
+                              st.session_state.nota_apto, key="nota_apto")
+            st.sidebar.slider("Nota Min Semi-Apto", 0, 10,
+                              st.session_state.nota_min_semi_apto, key="nota_min_semi_apto")
+            st.sidebar.slider("Nota Max Semi-Apto", 0, 10,
+                              st.session_state.nota_max_semi_apto, key="nota_max_semi_apto")
             if st.sidebar.button("Salvar Instruções"):
                 save_instructions(st.session_state.instructions,
                                   st.session_state.nota_apto,
@@ -195,10 +195,6 @@ def main():
             st.button("Enviar", on_click=send_message)
         with col2:
             st.button("Limpar Conversa", on_click=clear_messages)
-
-
-if __name__ == "__main__":
-    main()
 
 
 if __name__ == "__main__":
