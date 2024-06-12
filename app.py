@@ -12,7 +12,8 @@ vagas = [
     "turismo",
     "motorista basculante",
     "motorista swl",
-    "programador"
+    "programador",
+    "pedreiro",
 ]
 
 # Função de autenticação
@@ -166,11 +167,11 @@ def main():
             instruction_data["temperature"] = st.sidebar.slider(
                 "Temperatura", 0.0, 1.0, instruction_data["temperature"])
             instruction_data["nota_apto"] = st.sidebar.slider(
-                "Nota Apto", 0, 100, step=1, value=instruction_data["nota_apto"])
+                "Nota Apto", 0, 10, step=1, value=instruction_data["nota_apto"])
             instruction_data["nota_min_semi_apto"] = st.sidebar.slider(
-                "Nota Min Semi Apto", 0, 100, step=1, value=instruction_data["nota_min_semi_apto"])
+                "Nota Min Semi Apto", 0, 10, step=1, value=instruction_data["nota_min_semi_apto"])
             instruction_data["nota_max_semi_apto"] = st.sidebar.slider(
-                "Nota Max Semi Apto", 0, 100, step=1, value=instruction_data["nota_max_semi_apto"])
+                "Nota Max Semi Apto", 0, 10, step=1, value=instruction_data["nota_max_semi_apto"])
 
             if st.sidebar.button("Salvar Instruções"):
                 save_instructions(
