@@ -12,7 +12,8 @@ VAGAS = [
     "turismo",
     "motorista basculante",
     "motorista swl",
-    "programador"
+    "programador",
+    "pedreiro"
 ]
 
 
