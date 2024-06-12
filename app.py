@@ -12,8 +12,7 @@ vagas = [
     "turismo",
     "motorista basculante",
     "motorista swl",
-    "programador",
-    "pedreiro",
+    "programador"
 ]
 
 # Função de autenticação
@@ -139,7 +138,7 @@ def main():
         if st.button("Login"):
             if authenticate(username, password):
                 st.session_state.authenticated = True
-                st.experimental_rerun()
+                st.rerun()
             else:
                 st.error("Usuário ou senha incorretos")
     else:
@@ -154,9 +153,9 @@ def main():
                     st.session_state.instruction_data = {
                         "instruction": "",
                         "temperature": 0.7,
-                        "nota_apto": 0,
-                        "nota_min_semi_apto": 0,
-                        "nota_max_semi_apto": 0
+                        "nota_apto": 7,
+                        "nota_min_semi_apto": 5,
+                        "nota_max_semi_apto": 4
                     }
 
             instruction_data = st.session_state.instruction_data
@@ -186,7 +185,7 @@ def main():
         else:
             st.sidebar.write("Acesso restrito ao administrador")
 
-        st.title("RecrutaSmart")
+        st.title("Recruta")
 
         selected_vaga = st.selectbox("Selecione a vaga", vagas)
 
@@ -212,11 +211,20 @@ def main():
 
                 with st.spinner("O assistente está pensando..."):
                     instructions_data = get_instructions()
+                    instruction = instructions_data['instruction'].replace(
+                        "{nota_apto}", str(instruction_data["nota_apto"])
+                    ).replace(
+                        "{nota_min_sa}", str(
+                            instruction_data["nota_min_semi_apto"])
+                    ).replace(
+                        "{nota_max_sa}", str(
+                            instruction_data["nota_max_semi_apto"])
+                    )
                     response = ask_chatgpt(
                         user_message,
                         f"{context}\n\nVaga: {selected_vaga}",
                         instructions_data['temperature'],
-                        instructions_data['instruction']
+                        instruction
                     )
 
                 st.session_state.messages.append(
