@@ -13,7 +13,8 @@ VAGAS = [
     "motorista basculante",
     "motorista swl",
     "programador",
-    "pedreiro"
+    "pedreiro",
+    "engenheiro supervisor de obras de saneamento"
 ]
 
 
