@@ -122,15 +122,9 @@ def admin_interface():
     instruction_data["instruction"] = st.sidebar.text_area(
         "Instruções", instruction_data["instruction"], height=300)
     instruction_data["temperature"] = st.sidebar.slider(
-        "Temperatura", 0.0, 1.0, instruction_data["temperature"])
-    instruction_data["nota_apto"] = st.sidebar.slider(
-        "Nota Apto", 0, 10, step=1, value=instruction_data["nota_apto"])
-    instruction_data["nota_min_semi_apto"] = st.sidebar.slider(
-        "Nota Min Semi Apto", 0, 10, step=1, value=instruction_data["nota_min_semi_apto"])
-    instruction_data["nota_max_semi_apto"] = st.sidebar.slider(
-        "Nota Max Semi Apto", 0, 10, step=1, value=instruction_data["nota_max_semi_apto"])
+        "Temperatura", 0.0, 1.0, instruction_data["temperature"], key="admin_temperature")
 
-    if st.sidebar.button("Salvar Instruções"):
+    if st.sidebar.button("Salvar Instruções", key="admin_save_instructions"):
         save_instructions(
             instruction_data["instruction"],
             instruction_data["temperature"],
@@ -204,6 +198,26 @@ def user_interface():
     with col2:
         st.button("Limpar Conversa", on_click=clear_messages)
 
+    instructions_data = get_instructions()
+    if instructions_data:
+        st.sidebar.write("**Ajustes de Notas**")
+        instructions_data["nota_apto"] = st.sidebar.slider(
+            "Nota Apto", 0, 10, step=1, value=instructions_data["nota_apto"], key="user_nota_apto")
+        instructions_data["nota_min_semi_apto"] = st.sidebar.slider(
+            "Nota Min Semi Apto", 0, 10, step=1, value=instructions_data["nota_min_semi_apto"], key="user_nota_min_semi_apto")
+        instructions_data["nota_max_semi_apto"] = st.sidebar.slider(
+            "Nota Max Semi Apto", 0, 10, step=1, value=instructions_data["nota_max_semi_apto"], key="user_nota_max_semi_apto")
+
+        if st.sidebar.button("Salvar Ajustes de Notas", key="user_save_notes"):
+            save_instructions(
+                instructions_data["instruction"],
+                instructions_data["temperature"],
+                instructions_data["nota_apto"],
+                instructions_data["nota_min_semi_apto"],
+                instructions_data["nota_max_semi_apto"]
+            )
+            st.success("Ajustes de notas salvos com sucesso!")
+
 
 def main():
     if "authenticated" not in st.session_state:
@@ -217,15 +231,13 @@ def main():
         if st.button("Login"):
             if authenticate(username, password):
                 st.session_state.authenticated = True
-                st.experimental_rerun()
+                st.rerun()
             else:
                 st.error("Usuário ou senha incorretos")
     else:
         st.sidebar.title("Administração")
         if st.session_state.role == "admin":
             admin_interface()
-        else:
-            st.sidebar.write("Acesso restrito ao administrador")
         user_interface()
 
 
