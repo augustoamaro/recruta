@@ -203,10 +203,10 @@ def user_interface():
         st.sidebar.write("**Ajustes de Notas**")
         instructions_data["nota_apto"] = st.sidebar.slider(
             "Nota Apto", 0, 10, step=1, value=instructions_data["nota_apto"], key="user_nota_apto")
-        instructions_data["nota_min_semi_apto"] = st.sidebar.slider(
-            "Nota Min Semi Apto", 0, 10, step=1, value=instructions_data["nota_min_semi_apto"], key="user_nota_min_semi_apto")
         instructions_data["nota_max_semi_apto"] = st.sidebar.slider(
             "Nota Max Semi Apto", 0, 10, step=1, value=instructions_data["nota_max_semi_apto"], key="user_nota_max_semi_apto")
+        instructions_data["nota_min_semi_apto"] = st.sidebar.slider(
+            "Nota Min Semi Apto", 0, 10, step=1, value=instructions_data["nota_min_semi_apto"], key="user_nota_min_semi_apto")
 
         if st.sidebar.button("Salvar Ajustes de Notas", key="user_save_notes"):
             save_instructions(
